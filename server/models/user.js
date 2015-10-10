@@ -27,7 +27,7 @@ var UserSchema = new Schema({
 
   habitLimit: {
     type: Number,
-    default: 3
+    default: 6
   },
 
   habits: [HabitSchema]
