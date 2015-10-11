@@ -11,7 +11,8 @@ angular.module('app', [
   'gridshore.c3js.chart',
   'satellizer',
   'cgNotify',
-  'ui.calendar'
+  'ui.calendar',
+  'ui.bootstrap'
 ])
 
 .config(['$routeProvider', '$httpProvider', '$authProvider',
