@@ -2,6 +2,7 @@ angular.module('app', [
   'app.directives',
   'app.services',
   'app.create',
+  'app.calendar',
   'app.edit',
   'app.dashboard',
   'app.auth',
@@ -9,7 +10,8 @@ angular.module('app', [
   'ngSanitize',
   'gridshore.c3js.chart',
   'satellizer',
-  'cgNotify'
+  'cgNotify',
+  'ui.calendar'
 ])
 
 .config(['$routeProvider', '$httpProvider', '$authProvider',
@@ -41,6 +43,10 @@ angular.module('app', [
         templateUrl: 'app/edit/edit.html',
         controller: 'EditController',
         authenticate: true
+      })
+      .when('/calendar', {
+        templateUrl: 'app/calendar/calendar.html',
+        controller: 'CalendarController',
       })
       .otherwise({
         redirectTo: '/dashboard'
