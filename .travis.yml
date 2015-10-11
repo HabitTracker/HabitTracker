@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+- 0.12.7
+services:
+- mongodb
+before_install:
+- npm install -g grunt-cli
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+install:
+- npm install
+deploy:
+  provider: heroku
+  api_key:
+    secure: ZVlKM7NRR7mHccKHQDaqr6xF+e7ZOcpN1SOpJJph6IfPmJ9ylRbcqo90FpVQ1zvf3Gv6ufp6TFM3LAYI0TmB5XbbasKha6i7X8FFevGTeq5PD+0IrpePXRh9Upk4eMoD9/xPZ15VVcG5Jh9GLaEHoeq2Qe0na/Dfv8wmYqlBNXCy1zhd1sMxYIUBZWu8BY8Io5DwaMTWSionDUPibSdhmzyx0G//e82nUrFwpa2WNfv0e9LY/AviuDjb/p1Cq0HJWPy91pTP5HUCjg1zg9T/Pkf5VzUAjP/2SL8GZFpnLWPH+AThse0QNohoAqK7zCvRMKFI4NFqAZyfzwu9zM48b+xJs+YUfcAlqUnTxoo+qd2+Uoh+B1TuW7BByqPvfaUhdecy+IbL0D1g3/TbC64NkgIcGrD7GV443eSIc32EJNgXB6zCAcDPPIvq1wPADOC3ej2wC+jZPpllUK4dEn7pNdz8oOEGiYNJPqktrIMO1SjjCblKrI6weS5wKvLKoie/FC7ZMtxE7YYv78LrBhSY7BUh+hj/twEDHMFQCaXInUQja1uuRaWpedoq9AoHzEBZgN56vj7es/JM9uu1uywrdUAhAWed6OS8djB+wTSV8hHUXeZWvO6mTd08y+4niLiu2M4+AZ+SYJNlKTEOAGR+kz2xc5CiyFcmONCcnbXkeCY=
+  app: immense-shore-4230
+  on:
+    repo: habittracker/greenfield-apollo
+    branch: staging
