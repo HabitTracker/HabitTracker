@@ -38,6 +38,6 @@ module.exports = function(app, express) {
   // frontend routes ===============================================
   // route to handle all angular requests
   app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, '../../client/www/index.html'));
+    res.sendFile(path.join(__dirname, '../../client/index.html'));
   });
 };

@@ -4,8 +4,8 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     concat: {
       dist: {
-        src: ['client/www/js/**/*.js'],
-        dest: 'client/www/dist/<%= pkg.name %>.js'
+        src: ['client/app/**/*.js'],
+        dest: 'client/dist/<%= pkg.name %>.js'
       }
     },
 
@@ -36,7 +36,7 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'client/www/dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
+          'client/dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
         }
       }
     },
@@ -44,15 +44,15 @@ module.exports = function(grunt) {
     jshint: {
       files: [
         'index.js',
-        'client/www/**/*.js',
+        'client/**/*.js',
         'server/**/*.js'
       ],
       options: {
         force: false,
         jshintrc: '.jshintrc',
         ignores: [
-          'client/www/lib/**/*.js',
-          'client/www/dist/**/*.js'
+          'client/lib/**/*.js',
+          'client/dist/**/*.js'
         ]
       }
     },
@@ -60,7 +60,7 @@ module.exports = function(grunt) {
     cssmin: {
       dist: {
         files: {
-          'client/www/dist/style.min.css': 'client/www/css/style.css'
+          'client/dist/style.min.css': 'client/styles/style.css'
         }
       }
     },
@@ -68,7 +68,7 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: [
-          'client/www/**/*.js',
+          'client/app/**/*.js',
           'server/**/*.js'
         ],
         tasks: [
@@ -77,7 +77,7 @@ module.exports = function(grunt) {
         ]
       },
       css: {
-        files: 'client/www/css/*.css',
+        files: 'client/styles/*.css',
         tasks: ['cssmin']
       }
     },
