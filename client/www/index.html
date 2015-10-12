@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' *; style-src 'self' 'unsafe-inline' *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *">
+
+    <title>Parkbnb</title>
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+    <!-- interact with RESTful serverside data sources -->
+    <script src="lib/ionic/js/angular/angular-resource.min.js"></script>
+
+    <!-- your app's js -->
+    <script src="js/app.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/controllers.js"></script>
+      
+    <!-- google maps js -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJzP6h6sgoIynV-nd9AIJ7yJdVLNTQkww&sensor=true">
+    </script>
+   
+    <script src="lib/d3/d3.min.js"></script>
+    <script src="lib/c3/c3.min.js"></script>
+
+    <!--  <script src="lib/angular/angular.min.js"></script> -->
+
+    <script src="lib/angular-route/angular-route.js"></script>
+    <script src="lib/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="lib/c3-angular/c3-angular.min.js"></script>
+    <script src="lib/satellizer/satellizer.min.js"></script>
+    <script src="lib/angular-notify/angular-notify.js"></script>
+
+
+    
+  </head>
+
+
+  <body ng-app="starter">
+
+  <ion-nav-bar class="bar-positive">
+    <ion-nav-back-button class="button-clear">
+      <i class="ion-arrow-left-c"></i> Back
+    </ion-nav-back-button>
+  </ion-nav-bar>
+
+  <ion-nav-view></ion-nav-view> 
+
+
+   
+  </body>
+</html>
+
+<!-- to be factored in 
+
+    <nav ng-if="showNav" class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#/dashboard">Habit Trainer</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li><a href="#/dashboard">Dashboard</a></li>
+            <li><a href="#/create">Create Habit</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#/signout">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav> -->

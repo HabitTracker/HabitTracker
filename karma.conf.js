@@ -28,18 +28,18 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       // angular source
-      'client/lib/d3/d3.min.js',
-      'client/lib/c3/c3.min.js',
-      'client/lib/angular/angular.min.js',
-      'client/lib/angular-route/angular-route.min.js',
-      'client/lib/angular-sanitize/angular-sanitize.min.js',
-      'client/lib/angular-mocks/angular-mocks.js',
-      'client/lib/c3-angular/c3-angular.min.js',
-      'client/lib/satellizer/satellizer.min.js',
-      'client/lib/angular-notify/angular-notify.js',
+      'client/www/lib/d3/d3.min.js',
+      'client/www/lib/c3/c3.min.js',
+      'client/www/lib/angular/angular.min.js',
+      'client/www/lib/angular-route/angular-route.min.js',
+      'client/www/lib/angular-sanitize/angular-sanitize.min.js',
+      'client/www/lib/angular-mocks/angular-mocks.js',
+      'client/www/lib/c3-angular/c3-angular.min.js',
+      'client/www/lib/satellizer/satellizer.min.js',
+      'client/www/lib/angular-notify/angular-notify.js',
 
       // our app code
-      'client/app/**/*.js',
+      'client/www/js/**/*.js',
 
       // our spec files
       'node_modules/expect.js/index.js',
