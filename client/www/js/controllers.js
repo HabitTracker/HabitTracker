@@ -1,18 +1,27 @@
 angular.module('starter.controllers', ['starter.services'])
 
-.controller('AppCtrl', ['Login', '$scope', '$ionicModal', '$timeout', 
-  function(Login, $scope, $ionicModal, $timeout){
-    // Controllers in Ionic are only called when they are recreated or on 
-    // app start, instead of every page change
-
-    $scope.loginData = {}
+.controller('AppCtrl', ['$rootScope', '$scope', '$window', '$location', 'Auth', '$auth', '$ionicModal', '$timeout', 'ngFB',
+  function ($rootScope, $scope, $window, $location, Auth, $auth, $ionicModal, $timeout, ngFB) {
+    $rootScope.showNav = false;
+    $scope.user = {};
 
     // Create login modal
-    $ionicModal.fromTemplateUrl('templates/login.html', {
+    $ionicModal.fromTemplateUrl('templates/signin.html', {
       scope: $scope
     }).then(function(modal){
       $scope.modal = modal;
     })
+
+    // Satellizer authentication
+    $scope.authenticate = function(provider) {
+      $auth.authenticate(provider)
+        .then(function () {
+          $location.path('/');
+        })
+        .catch(function (error) {
+          $scope.alert = error.data.message;
+        });
+    };
 
     // Triggered in login modal to close
     $scope.closeLogin = function(){
@@ -24,17 +33,58 @@ angular.module('starter.controllers', ['starter.services'])
       $scope.modal.show();
     };
 
-    // Perform login action when the user submits the login form
-    $scope.doLogin = function(){
-      console.log("Browser Console - Logging in with ", $scope.loginData);
-      Login.signIn($scope.loginData);
-      // Simulate a login delay.  Remove and replace later with login code and login system
-      $timeout(function(){
-        $scope.closeLogin();
-      }, 1000);
+    $scope.signin = function () {
+      Auth.signin($scope.user)
+        .then(function (token) {
+          $window.localStorage.setItem('habit_token', token);
+          $location.path('/dashboard');
+        })
+        .catch(function (error) {
+          $scope.alert = error.data.message;
+        });
     };
+
+    $scope.signup = function () {
+      Auth.signup($scope.user)
+        .then(function (token) {
+          $window.localStorage.setItem('habit_token', token);
+          $location.path('/dashboard');
+        })
+        .catch(function (error) {
+          $scope.alert = error.data.message;
+        });
+    };
+
+    $scope.fbLogin = function () {
+    ngFB.login({scope: 'email,read_stream,publish_actions'}).then(
+        function (response) {
+            if (response.status === 'connected') {
+                console.log('Facebook login succeeded');
+                $scope.closeLogin();
+            } else {
+                alert('Facebook login failed');
+            }
+        });
+    };
+
+    if ($location.path() === '/signout') {
+      Auth.signout();
+    }
   }
 ])
+
+.controller('FBProfileCtrl', function ($scope, ngFB) {
+    ngFB.api({
+        path: '/me',
+        params: {fields: 'id,name'}
+    }).then(
+        function (user) {
+            $scope.user = user;
+        },
+        function (error) {
+            alert('Facebook error: ' + error.error_description);
+        });
+})
 
 .controller('RegisterCtrl', ['Register', '$scope', '$timeout', '$location', 
   function(Register, $scope, $timeout, $location){
@@ -335,49 +385,7 @@ angular.module('starter.controllers', ['starter.services'])
 
 //adding from greenfield
 
-.controller('AuthCtrl', ['$rootScope', '$scope', '$window', '$location', 'Auth', '$auth', 
-  function ($rootScope, $scope, $window, $location, Auth, $auth) {
-    $rootScope.showNav = false;
-    $scope.user = {};
 
-    // Satellizer authentication
-    $scope.authenticate = function(provider) {
-      $auth.authenticate(provider)
-        .then(function () {
-          $location.path('/');
-        })
-        .catch(function (error) {
-          $scope.alert = error.data.message;
-        });
-    };
-
-    $scope.signin = function () {
-      Auth.signin($scope.user)
-        .then(function (token) {
-          $window.localStorage.setItem('habit_token', token);
-          $location.path('/dashboard');
-        })
-        .catch(function (error) {
-          $scope.alert = error.data.message;
-        });
-    };
-
-    $scope.signup = function () {
-      Auth.signup($scope.user)
-        .then(function (token) {
-          $window.localStorage.setItem('habit_token', token);
-          $location.path('/dashboard');
-        })
-        .catch(function (error) {
-          $scope.alert = error.data.message;
-        });
-    };
-
-    if ($location.path() === '/signout') {
-      Auth.signout();
-    }
-  }
-])
 
 .controller('EditCtrl', ['$rootScope', '$scope', '$location', 'Habits', 
   function($rootScope, $scope, $location, Habits) {
@@ -537,3 +545,28 @@ angular.module('starter.controllers', ['starter.services'])
     };
   }
 ])
+
+.controller('SessionsCtrl', function($scope, Session) {
+    $scope.sessions = Session.query();
+})
+
+.controller('SessionCtrl', function($scope, $stateParams, Session, ngFB) {
+    $scope.session = Session.get({sessionId: $stateParams.sessionId});
+    
+    $scope.share = function (event) {
+    ngFB.api({
+        method: 'POST',
+        path: '/me/feed',
+        params: {
+            message: "I'll be attending: '" + $scope.session.title + "' by " +
+            $scope.session.speaker
+        }
+    }).then(
+        function () {
+            alert('The session was shared on Facebook');
+        },
+        function () {
+            alert('An error occurred while sharing this session on Facebook');
+        });
+};
+});

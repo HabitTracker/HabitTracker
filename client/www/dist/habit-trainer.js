@@ -185,20 +185,10 @@ angular.module('starter', ['ionic',
       // sets up one state to be the default state of parent
       abstract: true,
       templateUrl: 'templates/menu.html',
-      controller: 'AppCtrl'
+      controller: 'AuthCtrl'
     })
 
     //additions
-
-    .state('app.signin', {
-      url: '/signin',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/signin.html',
-          controller: 'AuthCtrl'
-        }
-      }
-    })
 
     .state('app.signup',{
       url: '/signup',
@@ -324,7 +314,7 @@ angular.module('starter.controllers', ['starter.services'])
     $scope.loginData = {}
 
     // Create login modal
-    $ionicModal.fromTemplateUrl('templates/login.html', {
+    $ionicModal.fromTemplateUrl('templates/signin.html', {
       scope: $scope
     }).then(function(modal){
       $scope.modal = modal;
@@ -349,6 +339,67 @@ angular.module('starter.controllers', ['starter.services'])
         $scope.closeLogin();
       }, 1000);
     };
+  }
+])
+
+.controller('AuthCtrl', ['$rootScope', '$scope', '$window', '$location', 'Auth', '$auth', '$ionicModal', '$timeout',
+  function ($rootScope, $scope, $window, $location, Auth, $auth, $ionicModal, $timeout) {
+    $rootScope.showNav = false;
+    $scope.user = {};
+
+    // Create login modal
+    $ionicModal.fromTemplateUrl('templates/signin.html', {
+      scope: $scope
+    }).then(function(modal){
+      $scope.modal = modal;
+    })
+
+    // Satellizer authentication
+    $scope.authenticate = function(provider) {
+      $auth.authenticate(provider)
+        .then(function () {
+          $location.path('/');
+        })
+        .catch(function (error) {
+          $scope.alert = error.data.message;
+        });
+    };
+
+    // Triggered in login modal to close
+    $scope.closeLogin = function(){
+      $scope.modal.hide();
+    };
+
+    //Open the login modal
+    $scope.login = function(){
+      $scope.modal.show();
+    };
+
+    $scope.signin = function () {
+      Auth.signin($scope.user)
+        .then(function (token) {
+          $window.localStorage.setItem('habit_token', token);
+          $location.path('/dashboard');
+        })
+        .catch(function (error) {
+          $scope.alert = error.data.message;
+        });
+    };
+
+    $scope.signup = function () {
+      Auth.signup($scope.user)
+        .then(function (token) {
+          $window.localStorage.setItem('habit_token', token);
+          $location.path('/dashboard');
+        })
+        .catch(function (error) {
+          $scope.alert = error.data.message;
+        });
+    };
+
+    if ($location.path() === '/signout') {
+      Auth.signout();
+    }
   }
 ])
 
@@ -651,49 +702,7 @@ angular.module('starter.controllers', ['starter.services'])
 
 //adding from greenfield
 
-.controller('AuthCtrl', ['$rootScope', '$scope', '$window', '$location', 'Auth', '$auth', 
-  function ($rootScope, $scope, $window, $location, Auth, $auth) {
-    $rootScope.showNav = false;
-    $scope.user = {};
 
-    // Satellizer authentication
-    $scope.authenticate = function(provider) {
-      $auth.authenticate(provider)
-        .then(function () {
-          $location.path('/');
-        })
-        .catch(function (error) {
-          $scope.alert = error.data.message;
-        });
-    };
-
-    $scope.signin = function () {
-      Auth.signin($scope.user)
-        .then(function (token) {
-          $window.localStorage.setItem('habit_token', token);
-          $location.path('/dashboard');
-        })
-        .catch(function (error) {
-          $scope.alert = error.data.message;
-        });
-    };
-
-    $scope.signup = function () {
-      Auth.signup($scope.user)
-        .then(function (token) {
-          $window.localStorage.setItem('habit_token', token);
-          $location.path('/dashboard');
-        })
-        .catch(function (error) {
-          $scope.alert = error.data.message;
-        });
-    };
-
-    if ($location.path() === '/signout') {
-      Auth.signout();
-    }
-  }
-])
 
 .controller('EditCtrl', ['$rootScope', '$scope', '$location', 'Habits', 
   function($rootScope, $scope, $location, Habits) {
@@ -875,30 +884,45 @@ angular.module('starter.services', ['ngResource'])
   }
 ])
 
-.factory('Login', ['$http', 
-  function($http){
-    var userID = null;
-    return {
-      signIn: function(loginData) {
-        return $http({
-          method: 'POST',
-          url: '/api/login',
-          data: loginData
-        })
-        .then(function(response){
-          console.log('response: ',response);
-          //set the userID here
-          return response.data.token;       
+.factory('Auth', function ($http, $location, $window, $auth, $sanitize) {
+
+    var signin = function (user) {
+      user.username = $sanitize(user.username);
+      user.password = $sanitize(user.password);
+      return $http.post('/authenticate/signin', user)
+        .then(function (resp) {
+          return resp.data.token;
         });
-      },
-      userID: userID
+    };
+
+    var signup = function (user) {
+      user.username = $sanitize(user.username);
+      user.password = $sanitize(user.password);
+      return $http.post('/authenticate/signup', user)
+        .then(function (resp) {
+          return resp.data.token;
+        });
+    };
+
+    var isAuth = function () {
+      return !!$window.localStorage.getItem('habit_token')
+    };
+
+    var signout = function () {
+      $auth.logout()
+        .then(function() {
+          $location.path('/signin');
+        });
+    };
+
+    return {
+      signin: signin,
+      signup: signup,
+      isAuth: isAuth,
+      signout: signout
     };
   }
-])
-
-// .factory('Login', function($resource){
-//   return $resource('api/login');
-// })
+)
 
 .factory('Register', ['$http', 
   function($http){
@@ -1031,45 +1055,7 @@ angular.module('starter.services', ['ngResource'])
   }
 )
 
-.factory('Auth', function ($http, $location, $window, $auth, $sanitize) {
 
-    var signin = function (user) {
-      user.username = $sanitize(user.username);
-      user.password = $sanitize(user.password);
-      return $http.post('/authenticate/signin', user)
-        .then(function (resp) {
-          return resp.data.token;
-        });
-    };
-
-    var signup = function (user) {
-      user.username = $sanitize(user.username);
-      user.password = $sanitize(user.password);
-      return $http.post('/authenticate/signup', user)
-        .then(function (resp) {
-          return resp.data.token;
-        });
-    };
-
-    var isAuth = function () {
-      return !!$window.localStorage.getItem('habit_token')
-    };
-
-    var signout = function () {
-      $auth.logout()
-        .then(function() {
-          $location.path('/signin');
-        });
-    };
-
-    return {
-      signin: signin,
-      signup: signup,
-      isAuth: isAuth,
-      signout: signout
-    };
-  }
-)
 
 .factory('Events', function (Habits) {
 

@@ -7,6 +7,12 @@ angular.module('starter.services', ['ngResource'])
 //Uses angular resource module to provice access to REST services at specified endpoint
 // Externalize the server parameters in a config module for the future
 
+.factory('Session', ['$resource',
+  function ($resource) {
+    return $resource('http://localhost:5000/sessions/:sessionId');
+  }
+])
+
 .factory('Search', ['$resource',
   function($resource){
     return $resource('http://localhost:5000/search/:searchId');
@@ -19,30 +25,45 @@ angular.module('starter.services', ['ngResource'])
   }
 ])
 
-.factory('Login', ['$http', 
-  function($http){
-    var userID = null;
-    return {
-      signIn: function(loginData) {
-        return $http({
-          method: 'POST',
-          url: '/api/login',
-          data: loginData
-        })
-        .then(function(response){
-          console.log('response: ',response);
-          //set the userID here
-          return response.data.token;       
+.factory('Auth', function ($http, $location, $window, $auth, $sanitize) {
+
+    var signin = function (user) {
+      user.username = $sanitize(user.username);
+      user.password = $sanitize(user.password);
+      return $http.post('/authenticate/signin', user)
+        .then(function (resp) {
+          return resp.data.token;
         });
-      },
-      userID: userID
+    };
+
+    var signup = function (user) {
+      user.username = $sanitize(user.username);
+      user.password = $sanitize(user.password);
+      return $http.post('/authenticate/signup', user)
+        .then(function (resp) {
+          return resp.data.token;
+        });
+    };
+
+    var isAuth = function () {
+      return !!$window.localStorage.getItem('habit_token')
+    };
+
+    var signout = function () {
+      $auth.logout()
+        .then(function() {
+          $location.path('/signin');
+        });
+    };
+
+    return {
+      signin: signin,
+      signup: signup,
+      isAuth: isAuth,
+      signout: signout
     };
   }
-])
-
-// .factory('Login', function($resource){
-//   return $resource('api/login');
-// })
+)
 
 .factory('Register', ['$http', 
   function($http){
@@ -175,45 +196,7 @@ angular.module('starter.services', ['ngResource'])
   }
 )
 
-.factory('Auth', function ($http, $location, $window, $auth, $sanitize) {
 
-    var signin = function (user) {
-      user.username = $sanitize(user.username);
-      user.password = $sanitize(user.password);
-      return $http.post('/authenticate/signin', user)
-        .then(function (resp) {
-          return resp.data.token;
-        });
-    };
-
-    var signup = function (user) {
-      user.username = $sanitize(user.username);
-      user.password = $sanitize(user.password);
-      return $http.post('/authenticate/signup', user)
-        .then(function (resp) {
-          return resp.data.token;
-        });
-    };
-
-    var isAuth = function () {
-      return !!$window.localStorage.getItem('habit_token')
-    };
-
-    var signout = function () {
-      $auth.logout()
-        .then(function() {
-          $location.path('/signin');
-        });
-    };
-
-    return {
-      signin: signin,
-      signup: signup,
-      isAuth: isAuth,
-      signout: signout
-    };
-  }
-)
 
 .factory('Events', function (Habits) {
 

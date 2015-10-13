@@ -1,6 +1,6 @@
 <!-- from greenfield -->
 
-<div class="container">
+<!-- <div class="container">
   <h3>Sign in</h3>
   <form class="form-group" ng-submit='signin()'>
     <label>Username</label>
@@ -11,9 +11,11 @@
     <br>
     <input class="btn btn-default" type="submit" value="Login">
     &nbsp;
-    <!-- Satellizer authentication -->
+    
+
     <button class="btn btn-default" ng-click="authenticate('google')">Sign in with Google</button>
-    <!-- Temporary alert padding -->
+    
+    
     &nbsp;&nbsp;
     <span ng-if="alert" class="alert alert-danger">
       <strong>Invalid login:</strong> {{alert}}
@@ -21,3 +23,56 @@
   </form>
   <a href="#/signup">Don't have an account? <strong>Signup</strong> ...</a>
 </div>
+ -->
+
+<ion-modal-view>
+  <ion-header-bar>
+    <h1 class="title">Login</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeLogin()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form ng-submit="signin()" novalidate>
+      <div class="list">
+        <label class="item item-input">
+          <span class="input-label">Username</span>
+          <input type="text" ng-model="user.username" required ng-minlength="8" ng-maxlength="70">
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Password</span>
+          <input type="password" ng-model="user.password" required ng-minlength="8" ng-maxlength="70">
+        </label>
+        <label class="item">
+          <button class="button button-block button-positive" type="submit">Log in</button>
+        </label>
+
+      </div>
+    </form>
+    <div>
+      <label class="item">
+        <a href="#/app/register" ng-click="closeLogin()">
+          <button class="button button-block button-positive">Register</button>
+        </a>
+      </label>
+          <!-- Satellizer authentication -->
+
+    <label class="item">
+      <button class="button button-block button-positive" ng-click="authenticate('google')">
+      Login with Google
+      </button>
+    </label>
+
+    <label class="item">
+      <button class="button button-block button-positive" ng-click="fbLogin()">
+      Login with Facebook
+      </button>
+    </label>
+
+    <span ng-if="alert" class="alert alert-danger">
+      <strong>Invalid login:</strong> {{alert}}
+    </span>
+    
+    </div>
+  </ion-content>
+</ion-modal-view>

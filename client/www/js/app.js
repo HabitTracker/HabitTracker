@@ -8,17 +8,20 @@ angular.module('starter', ['ionic',
   'starter.services',
   'ngRoute',
   'ngSanitize',
+  'ngOpenFB',
   'gridshore.c3js.chart',
   'satellizer',
   'cgNotify'])
 
 
 
-.run(['$ionicPlatform', '$rootScope', '$location', '$interval', 'Auth', 'Events', 'Habits',
-  function($ionicPlatform, $rootScope, $location, $interval, Auth, Events, Habits) {
+.run(['$ionicPlatform', '$rootScope', '$location', '$interval', 'Auth', 'Events', 'Habits', 'ngFB',
+  function($ionicPlatform, $rootScope, $location, $interval, Auth, Events, Habits, ngFB) {
+    ngFB.init({appId: '1484628041866242'});
     $ionicPlatform.ready(function() {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
+      
       if(window.cordova && window.cordova.plugins.Keyboard) {
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       }
@@ -190,22 +193,12 @@ angular.module('starter', ['ionic',
 
     //additions
 
-    .state('app.signin', {
-      url: '/signin',
-      views: {
-        'menuContent': {
-          templateUrl: 'templates/signin.html',
-          controller: 'AuthCtrl'
-        }
-      }
-    })
-
     .state('app.signup',{
       url: '/signup',
       views: {
         'menuContent': {
           templateUrl: 'templates/signup.html',
-          controller: 'AuthCtrl' 
+          controller: 'AppCtrl' 
         }
       } 
     })
@@ -281,6 +274,36 @@ angular.module('starter', ['ionic',
         'menuContent': {
           templateUrl: 'templates/search.html',
           controller: 'SearchResultsCtrl'
+        }
+      }
+    })
+
+    .state('app.fbProfile', {
+      url: "/fbProfile",
+      views: {
+          'menuContent': {
+              templateUrl: "templates/fbProfile.html",
+              controller: "FBProfileCtrl"
+          }
+      }
+    })
+
+    .state('app.sessions', {
+      url: "/sessions",
+      views: {
+          'menuContent': {
+              templateUrl: "templates/sessions.html",
+              controller: 'SessionsCtrl'
+          }
+      }
+    })
+
+    .state('app.session', {
+      url: "/sessions/:sessionId",
+      views: {
+          'menuContent': {
+            templateUrl: "templates/session.html",
+            controller: 'SessionCtrl'
         }
       }
     })
