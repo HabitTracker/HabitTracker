@@ -4,9 +4,9 @@
 
 ## Team
 
-  - __Product Owner__: Igor Stefanco
-  - __Scrum Master__: David Churchill
-  - __Development Team Members__: Erik Hsiao, Sanjay Chakrapani
+  - __Product Owner__: Max Yazhbin
+  - __Scrum Master__: Mike Hsieh
+  - __Development Team Members__: Boshika Tara, Artem Bakalov
 
 ## Table of Contents
 
