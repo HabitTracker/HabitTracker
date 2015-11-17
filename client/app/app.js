@@ -6,7 +6,6 @@ angular.module('app', [
   'app.edit',
   'app.dashboard',
   'app.auth',
-  'app.stats',
   'ngRoute',
   'ngSanitize',
   'gridshore.c3js.chart',
@@ -49,11 +48,6 @@ angular.module('app', [
       .when('/calendar', {
         templateUrl: 'app/calendar/calendar.html',
         controller: 'CalendarController',
-      })
-      .when('/stats', {
-        templateUrl: 'app/stats/stats.html',
-        controller: 'statsCtrl',
-        authenticate: true
       })
       .otherwise({
         redirectTo: '/dashboard'
