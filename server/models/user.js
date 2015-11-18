@@ -27,7 +27,7 @@ var UserSchema = new Schema({
 
   habitLimit: {
     type: Number,
-    default: 3
+    default: 6
   },
 
   habits: [HabitSchema]
@@ -47,11 +47,17 @@ UserSchema.pre('save', function(next) {
   if (!user.isModified('password')) {
     return next();
   } else {
-    bcrypt.genSalt(function(err, salt) {
-      if (err) return next(err);
+    bcrypt.genSalt(null, function(err, salt) {
+      if (err){
+        console.log('in genSalt');
+        return next(err);
+      } 
 
-      bcrypt.hash(user.password, salt, function(err, hash) {
-        if (err) return next(err);
+      bcrypt.hash(user.password, salt, null, function(err, hash) {
+        if (err) {
+          console.log('in hash');
+          return next(err);
+        }
 
         user.password = hash;
         next();

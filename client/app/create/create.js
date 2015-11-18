@@ -10,7 +10,7 @@ angular.module('app.create', [])
         habits.forEach(function(habit) {
           count += habit.active ? 1 : 0;
         });
-        if (count < 3) {  // Currently hard coded. Limit must be retrieved from backend.
+        if (count < 5) {  // Currently hard coded. Limit must be retrieved from backend.
           $scope.showCreate = true;
           $scope.showLimitExceed = false;
         } else {
