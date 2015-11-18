@@ -1,6 +1,6 @@
-# greenfield-apollo
+# Habit Tracker
 
-> Habit Trainer Web App with Chrome Extension
+> Habit Tracker Web App
 
 ## Team
 
@@ -45,7 +45,7 @@ grunt build
 
 ### Roadmap
 
-View the project roadmap [here](https://github.com/greenfield-apollo/greenfield-apollo/issues)
+View the project roadmap [here](https://github.com/habittracker/greenfield-apollo/issues)
 
 
 ## Contributing
