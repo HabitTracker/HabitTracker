@@ -48,6 +48,7 @@ angular.module('app', [
       .when('/calendar', {
         templateUrl: 'app/calendar/calendar.html',
         controller: 'CalendarController',
+        authenticate: true
       })
       .otherwise({
         redirectTo: '/dashboard'
