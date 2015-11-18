@@ -19,7 +19,7 @@ angular.module('app.calendar', ['ui.calendar', 'ui.bootstrap', 'app.services'])
         if (item.status === 'completed' && item.streak > 0){
           var currentStreak = item.streak;
           $scope.events.push({
-            title: item['habitName'], 
+            title: item.habitName,
             start: new Date(y, m, d - currentStreak + 1), 
             end: new Date(y, m, d + 1)
           });          
