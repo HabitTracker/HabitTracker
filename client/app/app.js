@@ -2,6 +2,7 @@ angular.module('app', [
   'app.directives',
   'app.services',
   'app.create',
+  'app.calendar',
   'app.edit',
   'app.dashboard',
   'app.auth',
@@ -9,7 +10,9 @@ angular.module('app', [
   'ngSanitize',
   'gridshore.c3js.chart',
   'satellizer',
-  'cgNotify'
+  'cgNotify',
+  'ui.calendar',
+  'ui.bootstrap'
 ])
 
 .config(['$routeProvider', '$httpProvider', '$authProvider',
@@ -40,6 +43,11 @@ angular.module('app', [
       .when('/edit', {
         templateUrl: 'app/edit/edit.html',
         controller: 'EditController',
+        authenticate: true
+      })
+      .when('/calendar', {
+        templateUrl: 'app/calendar/calendar.html',
+        controller: 'CalendarController',
         authenticate: true
       })
       .otherwise({
@@ -82,16 +90,8 @@ angular.module('app', [
         $location.path('/signin');
       }
     });
-    console.log('conflict testing');
-    console.log("something to be taken out later in app.js");
     var timer;
     var eventScheduler = function() {
-      console.log('more conflict testing');
-      console.log('eventScheduler start');
-      console.log('test1000000000');
-      console.log('5billion13984798');
-      console.log('lets conflict!!!');
-      console.log('something else');
       Habits.getHabits()
         .then(function (habits) {
           events = Events.getEventQueue(habits);
