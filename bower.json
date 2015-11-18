@@ -1,8 +1,8 @@
 {
   "name": "greenfield-apollo",
   "version": "0.0.1",
-  "homepage": "https://github.com/greenfield-apollo/greenfield-apollo",
-  "description": "Habit Trainer Application",
+  "homepage": "https://github.com/habittracker/greenfield-apollo",
+  "description": "Habit Tracker Application",
   "license": "MIT",
   "ignore": [
     "**/.*",
